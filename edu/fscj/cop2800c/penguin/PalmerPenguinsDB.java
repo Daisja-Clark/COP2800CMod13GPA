@@ -13,7 +13,7 @@ public class PalmerPenguinsDB
     public static void createDB(ArrayList<Penguin> penguins) {
         final String DB_NAME = "PalmerPenguins";
         final String CLASS_NAME = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-        final String CONN_URL = "jdbc:sqlserver://localhost:1433;integratedSecurity=true;";
+        final String CONN_URL = "jdbc:sqlserver://localhost:1433;integratedSecurity=true";
         final String SQL_DROP_TABLE = "DROP TABLE Penguin";
     
         try {
@@ -33,11 +33,19 @@ public class PalmerPenguinsDB
                 stmt.executeUpdate("USE " + DB_NAME);
     
                 // Create table
-                // *** add your code here
-                
+                String createTable = "CREATE TABLE Penguin " +
+                        "(SAMPLENUM smallint PRIMARY KEY NOT NULL," +
+                        "CULMENLEN float NOT NULL," +
+                        "CULMENDEPTH float NOT NULL," +
+                        "BODYMASS smallint NOT NULL," +
+                        "SEX char(1) NOT NULL," +
+                        "SPECIES varchar(20) NOT NULL," +
+                        "FLIPPERLEN float NOT NULL)";
                 
                 stmt.executeUpdate(createTable);
                 System.out.println("Table created");
+
+                     
     
                 // Insert records using batch with try-with-resources
                 String insertQuery = "INSERT INTO Penguin (SAMPLENUM, CULMENLEN, CULMENDEPTH, " +
@@ -63,7 +71,17 @@ public class PalmerPenguinsDB
     
                 // Query and print results using try-with-resources
                 try (ResultSet rs = stmt.executeQuery("SELECT * FROM Penguin")) {
-                    // *** add your code here
+                    while (rs.next()) {
+                        System.out.println(
+                            rs.getInt("SAMPLENUM") + "," +
+                            rs.getDouble("CULMENLEN") + "," +
+                            rs.getDouble("CULMENDEPTH") + "," +
+                            rs.getInt("BODYMASS") + "," +
+                            rs.getString("SEX") + "," +
+                            rs.getString("SPECIES") + "," +
+                            rs.getDouble("FLIPPERLEN")
+                        );
+                    }
 
                 }
     
